@@ -4828,6 +4828,13 @@ public final class Settings {
         };
 
         /**
+        /*
+         * Three Finger Gesture from Oppo
+         * @hide
+         */
+        public static final String THREE_FINGER_GESTURE = "three_finger_gesture";
+
+        /**
          * These are all public system settings
          *
          * @hide
@@ -4884,6 +4891,7 @@ public final class Settings {
             PUBLIC_SETTINGS.add(HAPTIC_FEEDBACK_ENABLED);
             PUBLIC_SETTINGS.add(SHOW_WEB_SUGGESTIONS);
             PUBLIC_SETTINGS.add(VIBRATE_WHEN_RINGING);
+	    PUBLIC_SETTINGS.add(THREE_FINGER_GESTURE);
         }
 
         /**
