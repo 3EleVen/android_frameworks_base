@@ -4857,6 +4857,28 @@ public final class Settings {
         public static final String QS_DATAUSAGE = "qs_datausage";
 
         /**
+         * Whether to show the notification ticker on the status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_SHOW_TICKER = "status_bar_show_ticker";
+
+        /**
+         * Ticker animation
+         * 0: Fade animation
+         * 1: Scrolling ticker
+         * @hide
+         */
+        public static final String STATUS_BAR_TICKER_ANIMATION_MODE =
+                "status_bar_ticker_animation_mode";
+
+        /**
+         * Status bar ticker duration in milliseconds.
+         * @hide
+         */
+        public static final String STATUS_BAR_TICKER_TICK_DURATION =
+                "status_bar_ticker_tick_duration";
+
+        /**
          * Whether to show the battery info on the lockscreen while charging
          * @hide
          */
@@ -4923,6 +4945,9 @@ public final class Settings {
 	    PUBLIC_SETTINGS.add(FLASHLIGHT_ON_CALL);
 	    PUBLIC_SETTINGS.add(QS_DATAUSAGE);
 	    PUBLIC_SETTINGS.add(LOCKSCREEN_BATTERY_INFO);
+	    PUBLIC_SETTINGS.add(STATUS_BAR_SHOW_TICKER);
+	    PUBLIC_SETTINGS.add(STATUS_BAR_TICKER_ANIMATION_MODE);
+	    PUBLIC_SETTINGS.add(STATUS_BAR_TICKER_TICK_DURATION);
         }
 
         /**

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2016 The CyanogenMod Project
-     Copyright (C) 2018-2019 The LineageOS Project
+     Copyright (C) 2016-2021 crDroid Android Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -16,15 +15,10 @@
      limitations under the License.
 -->
 <resources>
-    <!-- Width of the battery icon in the status bar when set to circle style. -->
-    <dimen name="status_bar_battery_icon_circle_width">14.5dp</dimen>
-    <!-- App Lock -->
-    <dimen name="applock_icon_dimension">54dp</dimen>
-    <!-- Daily data usage -->
-    <dimen name="data_usage_padding_start">4dp</dimen>
+
     <!-- Status bar notification ticker -->
-    <dimen name="ticker_start_padding">6dp</dimen>
-    <dimen name="ticker_icon_end_margin">4dp</dimen>
-    <dimen name="ticker_text_top_padding">2dp</dimen>
-    <dimen name="ticker_text_end_padding">10dp</dimen>
+    <style name="TextAppearance.StatusBar.PhoneTicker" parent="@*android:style/TextAppearance.StatusBar">
+        <!-- Note: must be dp to fit in status bar -->
+        <item name="android:textSize">14dp</item>
+    </style>
 </resources>

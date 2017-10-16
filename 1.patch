@@ -1,0 +1,44 @@
+From 0602acca9809395558639774f83a362160700143 Mon Sep 17 00:00:00 2001
+From: Lucchetto <lucchetto.tie@live.com>
+Date: Wed, 11 Dec 2019 19:48:13 +0100
+Subject: [PATCH] Lockscreen charging info: show decimal in battery temperature
+
+Change-Id: I10bbe4df988387c401802475697452796e0afb6d
+Signed-off-by: ReallySnow <reallysnow233@gmail.com>
+---
+ .../src/com/android/settingslib/fuelgauge/BatteryStatus.java  | 4 ++--
+ .../systemui/statusbar/KeyguardIndicationController.java      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/packages/SettingsLib/src/com/android/settingslib/fuelgauge/BatteryStatus.java b/packages/SettingsLib/src/com/android/settingslib/fuelgauge/BatteryStatus.java
+index 9834063f84f9..97e49224446b 100644
+--- a/packages/SettingsLib/src/com/android/settingslib/fuelgauge/BatteryStatus.java
++++ b/packages/SettingsLib/src/com/android/settingslib/fuelgauge/BatteryStatus.java
+@@ -53,11 +53,11 @@
+     public final int maxChargingCurrent;
+     public final int maxChargingVoltage;
+     public final int maxChargingWattage;
+-    public final int temperature;
++    public final float temperature;
+ 
+     public BatteryStatus(int status, int level, int plugged, int health,
+             int maxChargingCurrent, int maxChargingVoltage,
+-            int maxChargingWattage, int temperature) {
++            int maxChargingWattage, float temperature) {
+         this.status = status;
+         this.level = level;
+         this.plugged = plugged;
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java b/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
+index 52228a2e8cd3..bffa8c403a59 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
+@@ -128,7 +128,7 @@
+     private float mDisclosureMaxAlpha;
+     private int mChargingCurrent;
+     private double mChargingVoltage;
+-    private int mTemperature;
++    private float mTemperature;
+     private String mMessageToShowOnScreenOn;
+ 
+     private KeyguardUpdateMonitorCallback mUpdateMonitorCallback;
+
