@@ -4888,6 +4888,12 @@ public final class Settings {
                 "status_bar_ticker_tick_duration";
 
         /**
+         * Defines the screen-off animation to display
+         * @hide
+         */
+        public static final String SCREEN_OFF_ANIMATION = "screen_off_animation";
+
+        /**
          * Whether to show the battery info on the lockscreen while charging
          * @hide
          */
@@ -4965,6 +4971,7 @@ public final class Settings {
 	    PUBLIC_SETTINGS.add(STATUS_BAR_LYRICTICKER_ANIMATION_MODE);
 	    PUBLIC_SETTINGS.add(STATUS_BAR_TICKER_TICK_DURATION);
 	    PUBLIC_SETTINGS.add(STATUS_BAR_SHOW_LYRIC);
+	    PUBLIC_SETTINGS.add(SCREEN_OFF_ANIMATION);
         }
 
         /**
