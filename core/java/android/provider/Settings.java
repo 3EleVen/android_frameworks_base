@@ -4900,7 +4900,22 @@ public final class Settings {
         public static final String LOCKSCREEN_BATTERY_INFO = "lockscreen_battery_info";
 
         /**
+<<<<<<< HEAD
          * Whether to show the lyric on the status bar
+=======
+         * Show app volume rows in volume panel
+         * @hide
+         */
+        public static final String SHOW_APP_VOLUME = "show_app_volume";
+
+        /**
+         * Keys we no longer back up under the current schema, but want to continue to
+         * process when restoring historical backup datasets.
+         *
+         * All settings in {@link LEGACY_RESTORE_SETTINGS} array *must* have a non-null validator,
+         * otherwise they won't be restored.
+         *
+>>>>>>> 4669a730144c... base: make app volume rows optional [1/2]
          * @hide
          */
         public static final String STATUS_BAR_SHOW_LYRIC = "status_bar_show_lyric";
