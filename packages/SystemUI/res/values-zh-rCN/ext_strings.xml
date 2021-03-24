@@ -75,4 +75,8 @@
     <string name="global_action_restart_bootloader_progress">重新启动到引导模式\u2026</string>
     <string name="global_action_restart_download_progress">重新启动到下载模式\u2026</string>
     <string name="global_action_restart_fastboot_progress">正在重启到 fastbootd 模式\u2026</string>
+    <string name="applock_locked">&#160;已锁定</string>
+    <string name="applock_fingerprint">&#160;或者使用指纹解锁</string>
+    <string name="applock_credential">&#160;解锁</string>
+    <string name="applock_unlock">解锁</string>
 </resources>
