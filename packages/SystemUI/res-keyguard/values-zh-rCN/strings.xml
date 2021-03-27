@@ -139,8 +139,8 @@
     <string name="clock_title_bubble" msgid="2204559396790593213">"泡泡"</string>
     <string name="clock_title_analog" msgid="8409262532900918273">"指针"</string>
     <plurals name="type_clock_header" formatted="false" msgid="6782840450655632763">
-      <item quantity="other">"<annotation name="color">"时间是"</annotation>\n"^1\n^2</item>
-      <item quantity="one">"<annotation name="color">"时间是"</annotation>\n"^1\n^2</item>
+      <item quantity="other">"<annotation name="color">"现在是"</annotation>\n"^1\n^2</item>
+      <item quantity="one">"<annotation name="color">"现在是"</annotation>\n"^1\n^2</item>
     </plurals>
   <string-array name="type_clock_hours">
     <item msgid="3543074812389379830">"十二"</item>
@@ -178,44 +178,44 @@
     <item msgid="3881477602692646573">"十八"</item>
     <item msgid="3358129827772984226">"十九"</item>
     <item msgid="3308575407402865807">"二十"</item>
-    <item msgid="5346560955382229629">"二十\n一"</item>
-    <item msgid="226750304761473436">"二十\n二"</item>
-    <item msgid="616811325336838734">"二十\n三"</item>
-    <item msgid="616346116869053440">"二十\n四"</item>
-    <item msgid="4642996410384042830">"二十\n五"</item>
-    <item msgid="7506092849993571465">"二十\n六"</item>
-    <item msgid="1915078191101042031">"二十\n七"</item>
-    <item msgid="4292378641900520252">"二十\n八"</item>
-    <item msgid="5339513901773103696">"二十\n九"</item>
+    <item msgid="5346560955382229629">"二十一"</item>
+    <item msgid="226750304761473436">"二十二"</item>
+    <item msgid="616811325336838734">"二十三"</item>
+    <item msgid="616346116869053440">"二十四"</item>
+    <item msgid="4642996410384042830">"二十五"</item>
+    <item msgid="7506092849993571465">"二十六"</item>
+    <item msgid="1915078191101042031">"二十七"</item>
+    <item msgid="4292378641900520252">"二十八"</item>
+    <item msgid="5339513901773103696">"二十九"</item>
     <item msgid="3574673250891657607">"三十"</item>
-    <item msgid="5796923836589110940">"三十\n一"</item>
-    <item msgid="5859323597571702052">"三十\n二"</item>
-    <item msgid="5133326723148876507">"三十\n三"</item>
-    <item msgid="2693999494655663096">"三十\n四"</item>
-    <item msgid="3316754944962836197">"三十\n五"</item>
-    <item msgid="816891008836796723">"三十\n六"</item>
-    <item msgid="9158890488666520078">"三十\n七"</item>
-    <item msgid="1894769703213894011">"三十\n八"</item>
-    <item msgid="5638820345598572399">"三十\n九"</item>
+    <item msgid="5796923836589110940">"三十一"</item>
+    <item msgid="5859323597571702052">"三十二"</item>
+    <item msgid="5133326723148876507">"三十三"</item>
+    <item msgid="2693999494655663096">"三十四"</item>
+    <item msgid="3316754944962836197">"三十五"</item>
+    <item msgid="816891008836796723">"三十六"</item>
+    <item msgid="9158890488666520078">"三十七"</item>
+    <item msgid="1894769703213894011">"三十八"</item>
+    <item msgid="5638820345598572399">"三十九"</item>
     <item msgid="8838304023017895439">"四十"</item>
-    <item msgid="1834742948932559597">"四十\n一"</item>
-    <item msgid="6573707308847773944">"四十\n二"</item>
-    <item msgid="2450149950652678001">"四十\n三"</item>
-    <item msgid="2874667401318178036">"四十\n四"</item>
-    <item msgid="3391101532763048862">"四十\n五"</item>
-    <item msgid="1671489330863254362">"四十\n六"</item>
-    <item msgid="5916017359554531038">"四十\n七"</item>
-    <item msgid="8205413177993059967">"四十\n八"</item>
-    <item msgid="6607867415142171302">"四十\n九"</item>
+    <item msgid="1834742948932559597">"四十一"</item>
+    <item msgid="6573707308847773944">"四十二"</item>
+    <item msgid="2450149950652678001">"四十三"</item>
+    <item msgid="2874667401318178036">"四十四"</item>
+    <item msgid="3391101532763048862">"四十五"</item>
+    <item msgid="1671489330863254362">"四十六"</item>
+    <item msgid="5916017359554531038">"四十七"</item>
+    <item msgid="8205413177993059967">"四十八"</item>
+    <item msgid="6607867415142171302">"四十九"</item>
     <item msgid="8358850748472089162">"五十"</item>
-    <item msgid="3551313125255080234">"五十\n一"</item>
-    <item msgid="1559678130725716542">"五十\n二"</item>
-    <item msgid="431441994725492377">"五十\n三"</item>
-    <item msgid="6345774640539623024">"五十\n四"</item>
-    <item msgid="8018192990793931120">"五十\n五"</item>
-    <item msgid="6187650843754604534">"五十\n六"</item>
-    <item msgid="8727240174015993259">"五十\n七"</item>
-    <item msgid="848339003778952950">"五十\n八"</item>
-    <item msgid="5798985802835423618">"五十\n九"</item>
+    <item msgid="3551313125255080234">"五十一"</item>
+    <item msgid="1559678130725716542">"五十二"</item>
+    <item msgid="431441994725492377">"五十三"</item>
+    <item msgid="6345774640539623024">"五十四"</item>
+    <item msgid="8018192990793931120">"五十五"</item>
+    <item msgid="6187650843754604534">"五十六"</item>
+    <item msgid="8727240174015993259">"五十七"</item>
+    <item msgid="848339003778952950">"五十八"</item>
+    <item msgid="5798985802835423618">"五十九"</item>
   </string-array>
 </resources>
