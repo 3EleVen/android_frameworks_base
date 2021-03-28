@@ -78,6 +78,7 @@ import com.android.systemui.qs.QSDetail.Callback;
 import com.android.systemui.qs.carrier.QSCarrierGroup;
 import com.android.systemui.settings.BrightnessController;
 import com.android.systemui.statusbar.CommandQueue;
+import com.android.systemui.statusbar.info.DataUsageView;
 import com.android.systemui.statusbar.phone.StatusBarIconController;
 import com.android.systemui.statusbar.phone.StatusBarIconController.TintedIconManager;
 import com.android.systemui.statusbar.phone.StatusBarWindowView;
@@ -148,6 +149,11 @@ public class QuickStatusBarHeader extends RelativeLayout implements
 
     private int mRingerMode = AudioManager.RINGER_MODE_NORMAL;
     private AlarmManager.AlarmClockInfo mNextAlarm;
+
+    // Data Usage
+    private View mDataUsageLayout;
+    private ImageView mDataUsageImage;
+    private DataUsageView mDataUsageView;
 
     private ImageView mNextAlarmIcon;
     /** {@link TextView} containing the actual text indicating when the next alarm will go off. */
@@ -296,6 +302,13 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mDateView = findViewById(R.id.date);
         mSpace = findViewById(R.id.space);
 
+        mDataUsageLayout = findViewById(R.id.daily_data_usage_layout);
+        mDataUsageImage = findViewById(R.id.daily_data_usage_icon);
+        mDataUsageView = findViewById(R.id.data_sim_usage);
+        updateDataUsageImage();
+        // Set the correct tint for the data usage icons so they contrast
+        mDataUsageImage.setImageTintList(ColorStateList.valueOf(fillColor));
+
         // Tint for the battery icons are handled in setupHost()
         mBatteryRemainingIcon = findViewById(R.id.batteryRemainingIcon);
         // QS will always show the estimate, and BatteryMeterView handles the case where
@@ -306,6 +319,8 @@ public class QuickStatusBarHeader extends RelativeLayout implements
 
         mAllIndicatorsEnabled = mPrivacyItemController.getAllIndicatorsAvailable();
         mMicCameraIndicatorsEnabled = mPrivacyItemController.getMicCameraAvailable();
+
+        updateSettings();
 
         Dependency.get(TunerService.class).addTunable(this,
                 StatusBarIconController.ICON_BLACKLIST,
@@ -486,6 +501,43 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         updatePrivacyChipAlphaAnimator();
     }
 
+    public void updateSettings() {
+        updateDataUsageView();
+        updateDataUsageImage();
+    }
+
+    private void updateDataUsageView() {
+        if (mDataUsageView.isDataUsageEnabled() != 0) {
+            if (mDataUsageView.isConnected()) {
+                mDataUsageView.updateUsage();
+                mDataUsageLayout.setVisibility(View.VISIBLE);
+                mDataUsageImage.setVisibility(View.VISIBLE);
+                mDataUsageView.setVisibility(View.VISIBLE);
+            } else {
+                mDataUsageView.setVisibility(View.GONE);
+                mDataUsageImage.setVisibility(View.GONE);
+                mDataUsageLayout.setVisibility(View.GONE);
+            }
+        } else {
+            mDataUsageView.setVisibility(View.GONE);
+            mDataUsageImage.setVisibility(View.GONE);
+            mDataUsageLayout.setVisibility(View.GONE);
+        }
+    }
+
+    public void updateDataUsageImage() {
+        if (mDataUsageView.isDataUsageEnabled() == 0) {
+            mDataUsageImage.setVisibility(View.GONE);
+        } else {
+            if (mDataUsageView.isWiFiConnected()) {
+                mDataUsageImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_data_usage_wifi));
+            } else {
+                mDataUsageImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_data_usage_cellular));
+            }
+            mDataUsageImage.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void updateStatusIconAlphaAnimator() {
         mStatusIconsAlphaAnimator = new TouchAnimator.Builder()
                 .addFloat(mQuickQsStatusIcons, "alpha", 1, 0, 0)
@@ -509,6 +561,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mExpanded = expanded;
         mHeaderQsPanel.setExpanded(expanded);
         updateEverything();
+        updateDataUsageView();
     }
 
     /**
