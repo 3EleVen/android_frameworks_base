@@ -4841,6 +4841,12 @@ public final class Settings {
         public static final String THREE_FINGER_GESTURE = "three_finger_gesture";
 
         /**
+         * Show data usage in QS header
+         * @hide
+         */
+        public static final String QS_DATAUSAGE = "qs_datausage";
+
+        /**
          * These are all public system settings
          *
          * @hide
@@ -4898,6 +4904,7 @@ public final class Settings {
             PUBLIC_SETTINGS.add(SHOW_WEB_SUGGESTIONS);
             PUBLIC_SETTINGS.add(VIBRATE_WHEN_RINGING);
 	    PUBLIC_SETTINGS.add(THREE_FINGER_GESTURE);
+	    PUBLIC_SETTINGS.add(QS_DATAUSAGE);
         }
 
         /**
@@ -8775,12 +8782,6 @@ public final class Settings {
          * @hide
          */
         public static final String QS_AUTO_ADDED_TILES = "qs_auto_tiles";
-
-        /**
-         * Show data usage in QS header
-         * @hide
-         */
-        public static final String QS_DATAUSAGE = "qs_datausage";
 
         /**
          * Whether the Lockdown button should be shown in the power menu.

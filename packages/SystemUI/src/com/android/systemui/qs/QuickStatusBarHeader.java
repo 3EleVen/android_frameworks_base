@@ -905,7 +905,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         } else if (StatusBarIconController.ICON_BLACKLIST.equals(key)) {
             mClockView.setClockVisibleByUser(!StatusBarIconController.getIconBlacklist(
                     mContext, newValue).contains("clock"));
-        } else if (QS_DATAUSAGE.equals.equals(key)) {
+        } else if (QS_DATAUSAGE.equals(key)) {
             mQSDataUsage = TunerService.parseInteger(newValue, 0);
             registerDataUsageView();
             updateDataUsageView();
