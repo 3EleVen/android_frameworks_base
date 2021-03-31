@@ -126,4 +126,7 @@
 
     <!-- Daily data usage -->
     <string name="daily_data_usage_title">Today\'s usage</string>
+
+    <!-- Scrolling Screenshot string -->
+    <string name="scrollss">Scroll</string>
 </resources>
