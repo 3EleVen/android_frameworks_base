@@ -81,4 +81,5 @@
     <string name="applock_unlock">解锁</string>
     <string name="daily_data_usage_title">今日已用:\'s</string>
     <string name="biometric_dialog_button_use_face">使用面部解锁</string>
+    <string name="scrollss">滚屏</string>
 </resources>
