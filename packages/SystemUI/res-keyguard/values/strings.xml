@@ -424,4 +424,8 @@ number">%d</xliff:g> remaining attempts before SIM becomes permanently unusable.
     <!-- Name of the "Typographic" clock face [CHAR LIMIT=15]-->
     <string name="clock_title_type">Type</string>
 
+    <string name="clock_title_swing" translatable="false">Swing animation</string>
+    <string name="clock_title_loading" translatable="false">Loading animation</string>
+    <string name="clock_title_bubble_animation" translatable="false">Bubble animation</string>
+
 </resources>
