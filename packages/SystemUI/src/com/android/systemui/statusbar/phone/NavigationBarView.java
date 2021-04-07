@@ -1049,13 +1049,13 @@ public class NavigationBarView extends FrameLayout implements
         updateButtonLocation(getImeSwitchButton(), inScreenSpace);
         updateButtonLocation(getAccessibilityButton(), inScreenSpace);
         if (getPowerButton() != null) {
-            updateButtonLocation(getPowerButton(), mPowerButtonBounds, false);
+            updateButtonLocation(getPowerButton(), inScreenSpace);
         }
         if (getVolumeMinusButton() != null) {
-            updateButtonLocation(getVolumeMinusButton(), mVolumeMinusButtonBounds, false);
+            updateButtonLocation(getVolumeMinusButton(), inScreenSpace);
         }
         if (getVolumePlusButton() != null) {
-            updateButtonLocation(getVolumePlusButton(), mVolumePlusButtonBounds, false);
+            updateButtonLocation(getVolumePlusButton(), inScreenSpace);
         }
         if (includeFloatingRotationButton && mFloatingRotationButton.isVisible()) {
             updateButtonLocation(mFloatingRotationButton.getCurrentView(), inScreenSpace);
