@@ -42,6 +42,8 @@ import android.text.TextUtils;
 import android.util.ArraySet;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -403,21 +405,21 @@ public class BatteryMeterView extends LinearLayout implements
     private void setPercentTextAtCurrentLevel() {
 	String bolt = "\u26A1\uFE0E";
         CharSequence mChargeIndicator = bolt;
-        if (mCharging)	{ mBatteryPercentView.setText(
-	
+        if (mCharging)	{ mBatteryPercentView.setText(	
                 NumberFormat.getIntegerInstance().format(mLevel / 1f) + mChargeIndicator);
+		AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(this.getContext(), R.anim.alpha);
+		mBatteryPercentView.startAnimation(alphaAnimation);
 	}
 	else { mBatteryPercentView.setText(
 		NumberFormat.getIntegerInstance().format(mLevel / 1f));
+		mBatteryPercentView.clearAnimation();
 	}
-
 	int BL = Integer.parseInt(NumberFormat.getIntegerInstance().format(mLevel / 1f));
         if (BL <= 20)	{ 
 	mBatteryPercentView.setTextColor(Color.RED);
 	}
 	else { mBatteryPercentView.setTextColor(mTextColor);
 	}
-
         setContentDescription(
                 getContext().getString(mCharging ? R.string.accessibility_battery_level_charging
                         : R.string.accessibility_battery_level, mLevel));
