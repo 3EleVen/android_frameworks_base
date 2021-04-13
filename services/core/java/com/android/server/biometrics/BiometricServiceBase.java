@@ -666,7 +666,8 @@ public abstract class BiometricServiceBase extends SystemService
         mCleanupUnusedFingerprints = statsModality() == BiometricsProtoEnums.MODALITY_FINGERPRINT &&
                 mContext.getResources().getBoolean(
                 org.mokee.platform.internal.R.bool.config_cleanupUnusedFingerprints);
-        mPostResetRunnableForAllClients = BiometricsProtoEnums.MODALITY_FINGERPRINT &&
+        mPostResetRunnableForAllClients =
+                statsModality() == BiometricsProtoEnums.MODALITY_FINGERPRINT &&
                 mContext.getResources().getBoolean(
                 org.mokee.platform.internal.R.bool
                         .config_fingerprintPostResetRunnableForAllClients);
