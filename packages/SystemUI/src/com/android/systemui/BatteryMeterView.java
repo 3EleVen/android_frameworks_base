@@ -33,7 +33,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.ContentObserver;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Handler;
@@ -413,12 +412,6 @@ public class BatteryMeterView extends LinearLayout implements
 	else { mBatteryPercentView.setText(
 		NumberFormat.getIntegerInstance().format(mLevel / 1f));
 		mBatteryPercentView.clearAnimation();
-	}
-	int BL = Integer.parseInt(NumberFormat.getIntegerInstance().format(mLevel / 1f));
-        if (BL <= 20)	{ 
-	mBatteryPercentView.setTextColor(Color.RED);
-	}
-	else { mBatteryPercentView.setTextColor(mTextColor);
 	}
         setContentDescription(
                 getContext().getString(mCharging ? R.string.accessibility_battery_level_charging
