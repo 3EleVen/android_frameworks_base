@@ -4839,6 +4839,17 @@ public final class Settings {
          */
         public static final String THREE_FINGER_GESTURE = "three_finger_gesture";
 
+
+	/**
+         * Whether to blink flashlight for incoming calls
+         * 0 = Disabled (Default)
+         * 1 = Blink flashlight only in Ringer mode
+         * 2 = Blink flashlight only in DND mode
+         * 3 = Blink flashlight always regardless of ringer mode
+         * @hide
+         */
+        public static final String FLASHLIGHT_ON_CALL = "flashlight_on_call";
+
         /**
          * Show data usage in QS header
          * @hide
@@ -4909,6 +4920,7 @@ public final class Settings {
             PUBLIC_SETTINGS.add(SHOW_WEB_SUGGESTIONS);
             PUBLIC_SETTINGS.add(VIBRATE_WHEN_RINGING);
 	    PUBLIC_SETTINGS.add(THREE_FINGER_GESTURE);
+	    PUBLIC_SETTINGS.add(FLASHLIGHT_ON_CALL);
 	    PUBLIC_SETTINGS.add(QS_DATAUSAGE);
 	    PUBLIC_SETTINGS.add(LOCKSCREEN_BATTERY_INFO);
         }
