@@ -130,10 +130,6 @@
     <!-- Daily data usage -->
     <string name="daily_data_usage_title">Today\'s usage</string>
 
-    <!-- QS Data Usage -->
-    <string name="dot_data_used"><![CDATA[<font size="12" color="%1$s">●&#32;</font>]]>‎‎ ‎%2$s data used</string>
-    <string name="dot_data_unknown">Unknown</string>
-
      <!-- Biometric Dialog - Use Face -->
     <string name="biometric_dialog_button_use_face">Use Face</string>
 </resources>

@@ -80,7 +80,5 @@
     <string name="applock_credential">&#160;解锁</string>
     <string name="applock_unlock">解锁</string>
     <string name="daily_data_usage_title">今日已用:\'s</string>
-    <string name="dot_data_used"><![CDATA[<font size="12" color="%1$s">●&#32;</font>]]>‎‎ ‎%2$s 已使用</string>
-    <string name="dot_data_unknown">未知</string>
     <string name="biometric_dialog_button_use_face">使用面部解锁</string>
 </resources>

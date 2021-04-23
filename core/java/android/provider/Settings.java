@@ -4857,12 +4857,6 @@ public final class Settings {
         public static final String QS_DATAUSAGE = "qs_datausage";
 
         /**
-         * Show current active data sim data usage
-	 * @hide
-         */
-        public static final String QS_SHOW_DATA_USAGE = "qs_show_data_usage";
-
-        /**
          * Whether to show the battery info on the lockscreen while charging
          * @hide
          */
@@ -4928,7 +4922,6 @@ public final class Settings {
 	    PUBLIC_SETTINGS.add(THREE_FINGER_GESTURE);
 	    PUBLIC_SETTINGS.add(FLASHLIGHT_ON_CALL);
 	    PUBLIC_SETTINGS.add(QS_DATAUSAGE);
-	    PUBLIC_SETTINGS.add(QS_SHOW_DATA_USAGE);
 	    PUBLIC_SETTINGS.add(LOCKSCREEN_BATTERY_INFO);
         }
 
