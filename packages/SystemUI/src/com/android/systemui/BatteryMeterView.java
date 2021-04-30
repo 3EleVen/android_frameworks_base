@@ -404,10 +404,14 @@ public class BatteryMeterView extends LinearLayout implements
     private void setPercentTextAtCurrentLevel() {
 	String bolt = "\u26A1\uFE0E";
         CharSequence mChargeIndicator = bolt;
+	int BL = Integer.parseInt(NumberFormat.getIntegerInstance().format(mLevel / 1f));
         if (mCharging)	{ mBatteryPercentView.setText(	
                 NumberFormat.getIntegerInstance().format(mLevel / 1f) + mChargeIndicator);
-		AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(this.getContext(), R.anim.alpha);
-		mBatteryPercentView.startAnimation(alphaAnimation);
+		if (BL <= 99) {
+		    AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(this.getContext(), R.anim.alpha);
+		    mBatteryPercentView.startAnimation(alphaAnimation);
+		}
+		else {mBatteryPercentView.clearAnimation();}
 	}
 	else { mBatteryPercentView.setText(
 		NumberFormat.getIntegerInstance().format(mLevel / 1f));
