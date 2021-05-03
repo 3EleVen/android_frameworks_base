@@ -766,7 +766,7 @@ public class ClipboardService extends SystemService {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getContext(), applicationName + " tried to access the clipboard", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), applicationName + "正在访问剪切板", Toast.LENGTH_SHORT).show();
             }
         });
 
