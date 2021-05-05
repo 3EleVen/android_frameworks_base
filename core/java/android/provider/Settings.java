@@ -4885,6 +4885,12 @@ public final class Settings {
         public static final String LOCKSCREEN_BATTERY_INFO = "lockscreen_battery_info";
 
         /**
+         * Whether to show the lyric on the status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_SHOW_LYRIC = "status_bar_show_lyric";
+
+        /**
          * These are all public system settings
          *
          * @hide
@@ -4948,6 +4954,7 @@ public final class Settings {
 	    PUBLIC_SETTINGS.add(STATUS_BAR_SHOW_TICKER);
 	    PUBLIC_SETTINGS.add(STATUS_BAR_TICKER_ANIMATION_MODE);
 	    PUBLIC_SETTINGS.add(STATUS_BAR_TICKER_TICK_DURATION);
+	    PUBLIC_SETTINGS.add(STATUS_BAR_SHOW_LYRIC);
         }
 
         /**

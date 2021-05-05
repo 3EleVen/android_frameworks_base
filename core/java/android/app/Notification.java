@@ -638,6 +638,16 @@ public class Notification implements Parcelable
     @Retention(RetentionPolicy.SOURCE)
     public @interface NotificationFlags{};
 
+    /**
+     * @hide
+     */
+    public static final int FLAG_ALWAYS_SHOW_TICKER = 0x1000000;
+
+    /**
+     * @hide
+     */
+    public static final int FLAG_ONLY_UPDATE_TICKER = 0x2000000;
+
     public int flags;
 
     /** @hide */

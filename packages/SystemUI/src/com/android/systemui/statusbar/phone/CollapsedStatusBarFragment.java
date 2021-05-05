@@ -22,6 +22,7 @@ import android.annotation.Nullable;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,13 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
 
     private View mTickerViewFromStub;
 
+    private boolean mLyricEnabled;
+    private View mLyricViewFromStub;
+    private View mLyricViewContainer;
+
+    private static final String STATUS_BAR_SHOW_LYRIC =
+                    "system:" + Settings.System.STATUS_BAR_SHOW_LYRIC;
+
     private SignalCallback mSignalCallback = new SignalCallback() {
         @Override
         public void setIsAirplaneMode(NetworkController.IconState icon) {
@@ -119,6 +127,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         initEmergencyCryptkeeperText();
         initOperatorName();
         initTickerView();
+        Dependency.get(TunerService.class).addTunable(this,
+                STATUS_BAR_SHOW_LYRIC);
     }
 
     @Override
@@ -160,6 +170,14 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         if (wasClockBlacklisted && !mIsClockBlacklisted) {
             showClock(false);
         }
+        switch (key) {
+            case STATUS_BAR_SHOW_LYRIC:
+                mLyricEnabled = TunerService.parseIntegerSwitch(newValue, false);
+                initLyricView();
+                break;
+            default:
+                break;
+        }
     }
 
     public void initNotificationIconArea(NotificationIconAreaController
@@ -198,9 +216,11 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
             if ((state1 & DISABLE_SYSTEM_INFO) != 0) {
                 hideSystemIconArea(animate);
                 hideOperatorName(animate);
+                hideLyric(animate);
             } else {
                 showSystemIconArea(animate);
                 showOperatorName(animate);
+                showLyric(animate);
             }
         }
         if ((diff1 & DISABLE_NOTIFICATION_ICONS) != 0) {
@@ -280,6 +300,18 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     public void showSystemIconArea(boolean animate) {
         animateShow(mSystemIconArea, animate);
         animateShow(mNetworkTrafficHolder, animate);
+    }
+
+    public void showLyric(boolean animate) {
+        if (mLyricViewContainer != null) {
+            animateShow(mLyricViewContainer, animate);
+        }
+    }
+
+    public void hideLyric(boolean animate) {
+        if (mLyricViewContainer != null) {
+            animateHide(mLyricViewContainer, animate);
+        }
     }
 
     public void hideClock(boolean animate) {
@@ -421,5 +453,20 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         ImageSwitcher tickerIcon = (ImageSwitcher) mStatusBar.findViewById(R.id.tickerIcon);
         mStatusBarComponent.createTicker(
                 getContext(), mStatusBar, tickerView, tickerIcon, mTickerViewFromStub);
+    }
+
+    private void initLyricView() {
+        if (mLyricEnabled) {
+            mLyricViewContainer = mStatusBar.findViewById(R.id.lyric_container);
+            View lyricStub = mStatusBar.findViewById(R.id.lyric_stub);
+            if (mLyricViewFromStub == null && lyricStub != null) {
+                mLyricViewFromStub = ((ViewStub) lyricStub).inflate();
+            }
+            TickerView tickerView = (TickerView) mStatusBar.findViewById(R.id.lyricText);
+            ImageSwitcher tickerIcon = (ImageSwitcher) mStatusBar.findViewById(R.id.lyricIcon);
+            mStatusBarComponent.createLyricTicker(getContext(), mStatusBar, tickerView, tickerIcon, mLyricViewFromStub);
+        } else {
+            mStatusBarComponent.disableLyricTicker();
+        }
     }
 }
