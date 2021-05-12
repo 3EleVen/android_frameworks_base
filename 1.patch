@@ -1,126 +1,83 @@
-From 4fbbf4a002577747d486b1f652ca3cfc5b42eb97 Mon Sep 17 00:00:00 2001
-From: Pranav Vashi <neobuddy89@gmail.com>
-Date: Tue, 4 May 2021 21:33:58 +0530
-Subject: [PATCH] Bring back music ticker
+From 9a9c6e0c197f422d98ead927df55cc9b02e880c7 Mon Sep 17 00:00:00 2001
+From: Pawit Pornkitprasan <p.pawit@gmail.com>
+Date: Mon, 17 Nov 2014 18:59:57 +0100
+Subject: [PATCH] Improve scrolling cache
 
-* Partially based on our 10.0 patch:
-  https://github.com/crdroidandroid/android_frameworks_base/commit/83734253b143d518c29131fcde8e116301a0f0f6
+Scrolling cache helps make short scrolls/flings smooth but will
+cause stutter when long flings are made. This patch disables
+scrolling cache when long flings are made.
 
-Signed-off-by: Pranav Vashi <neobuddy89@gmail.com>
+This patch also fixes a related bug where scrolling cache will
+not be enabled properly when transitioning from flinging to scrolling.
+
+Patch Set 2: Calculate threshold based on maximum velocity (Sang Tae Park)
+
+Change-Id: Iad52a35120212c871ffd35df6184aeb678ee44aa
+Signed-off-by: Alex Naidis <alex.naidis@linux.com>
 ---
- .../statusbar/NotificationMediaManager.java   | 17 ++++++++++--
- .../systemui/statusbar/phone/StatusBar.java   | 10 +++++++
- .../systemui/statusbar/phone/Ticker.java      | 26 ++++++++++++-------
- 3 files changed, 41 insertions(+), 12 deletions(-)
+ core/java/android/widget/AbsListView.java | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/NotificationMediaManager.java b/packages/SystemUI/src/com/android/systemui/statusbar/NotificationMediaManager.java
-index 110c795c13b7..990ba2050782 100644
---- a/packages/SystemUI/src/com/android/systemui/statusbar/NotificationMediaManager.java
-+++ b/packages/SystemUI/src/com/android/systemui/statusbar/NotificationMediaManager.java
-@@ -42,6 +42,7 @@
- import android.provider.DeviceConfig.Properties;
- import android.provider.Settings;
- import android.service.notification.NotificationListenerService;
-+import android.service.notification.StatusBarNotification;
- import android.util.ArraySet;
- import android.util.Log;
- import android.view.View;
-@@ -431,11 +432,12 @@ public void removeCallback(MediaListener callback) {
-     public void findAndUpdateMediaNotifications() {
-         boolean metaDataChanged = false;
+diff --git a/core/java/android/widget/AbsListView.java b/core/java/android/widget/AbsListView.java
+index 16e87f8bca9a..6ed7aee53df1 100644
+--- a/core/java/android/widget/AbsListView.java
++++ b/core/java/android/widget/AbsListView.java
+@@ -659,6 +659,7 @@
+     private int mMinimumVelocity;
+     @UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.P, trackingBug = 124051740)
+     private int mMaximumVelocity;
++    private int mDecacheThreshold;
+     private float mVelocityScale = 1.0f;
  
-+        // Promote the media notification with a controller in 'playing' state, if any.
-+        NotificationEntry mediaNotification = null;
-+
-         synchronized (mEntryManager) {
-             Collection<NotificationEntry> allNotifications = mEntryManager.getAllNotifs();
+     final boolean[] mIsScrap = new boolean[1];
+@@ -924,6 +925,7 @@ private void initAbsListView() {
+         mVerticalScrollFactor = configuration.getScaledVerticalScrollFactor();
+         mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
+         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
++        mDecacheThreshold = mMaximumVelocity / 2;
+         mOverscrollDistance = configuration.getScaledOverscrollDistance();
+         mOverflingDistance = configuration.getScaledOverflingDistance();
  
--            // Promote the media notification with a controller in 'playing' state, if any.
--            NotificationEntry mediaNotification = null;
-             MediaController controller = null;
-             for (NotificationEntry entry : allNotifications) {
-                 if (entry.isMediaNotification()) {
-@@ -514,6 +516,17 @@ public void findAndUpdateMediaNotifications() {
- 
-         if (metaDataChanged) {
-             mEntryManager.updateNotifications("NotificationMediaManager - metaDataChanged");
-+            if (PlaybackState.STATE_PLAYING ==
-+                    getMediaControllerPlaybackState(mMediaController) &&
-+                    mStatusBarLazy.get().isMusicTickerEnabled() &&
-+                    mediaNotification != null && mMediaMetadata != null) {
-+                StatusBarNotification entry = mediaNotification.getSbn();
-+                mMainExecutor.executeDelayed(() -> {
-+                    mStatusBarLazy.get().tick(entry, true, true, mMediaMetadata, null);
-+                }, 600);
-+            } else {
-+                mStatusBarLazy.get().resetTrackInfo();
-+            }
-         }
- 
-         dispatchUpdateMediaMetaData(metaDataChanged, true /* allowEnterAnimation */);
-diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBar.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBar.java
-index d506b60be8c7..d527c5dd5702 100644
---- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBar.java
-+++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBar.java
-@@ -3055,6 +3055,16 @@ public boolean isTickerEnabled() {
-         return mTicker != null && mTickerEnabled != 0;
-     }
- 
-+    public boolean isMusicTickerEnabled() {
-+        return mTicker != null && mTickerEnabled == 2;
-+    }
-+
-+    public void resetTrackInfo() {
-+        if (mTicker != null) {
-+            mTicker.resetShownMediaMetadata();
-+        }
-+    }
-+
-     public void haltTicker() {
-         if (mTicker != null && mTickerEnabled != 0) {
-             mTicker.halt();
-diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/Ticker.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/Ticker.java
-index c53164fc07c7..aa783e421674 100644
---- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/Ticker.java
-+++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/Ticker.java
-@@ -228,23 +228,29 @@ public void addEntry(StatusBarNotification n, boolean isMusic, MediaMetadata med
-         int initialCount = mSegments.size();
-         ContentResolver resolver = mContext.getContentResolver();
- 
--        if (isMusic) {
-+        if (isMusic && mediaMetaData != null) {
-             CharSequence artist = mediaMetaData.getText(MediaMetadata.METADATA_KEY_ARTIST);
-             CharSequence album = mediaMetaData.getText(MediaMetadata.METADATA_KEY_ALBUM);
-             CharSequence title = mediaMetaData.getText(MediaMetadata.METADATA_KEY_TITLE);
--            if (artist != null && album != null && title != null) {
--                if (mShowingMediaMetadata != null &&
--                        artist.equals(mShowingMediaMetadata.getText(
--                                MediaMetadata.METADATA_KEY_ARTIST)) &&
--                        album.equals(mShowingMediaMetadata.getText(
--                                MediaMetadata.METADATA_KEY_ALBUM)) &&
--                        title.equals(mShowingMediaMetadata.getText(
--                                MediaMetadata.METADATA_KEY_TITLE))) {
-+            if (artist != null || album != null || title != null) {
-+                if (mShowingMediaMetadata == mediaMetaData) {
-                     // Already shown
-                     return;
+@@ -4656,7 +4658,7 @@ public void run() {
+                     // Keep the fling alive a little longer
+                     postDelayed(this, FLYWHEEL_TIMEOUT);
+                 } else {
+-                    endFling();
++                    endFling(false); // Don't disable the scrolling cache right after it was enabled
+                     mTouchMode = TOUCH_MODE_SCROLL;
+                     reportScrollStateChange(OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
                  }
-                 mShowingMediaMetadata = mediaMetaData;
--                n.getNotification().tickerText = artist.toString() + " - " + album.toString() + " - " + title.toString();
-+                String builder = "";
-+                if (artist != null)
-+                    builder = artist.toString();
-+                if (artist != null && album != null)
-+                    builder = builder + " - ";
-+                if (album != null)
-+                    builder = builder + album.toString();
-+                if ((artist != null || album != null) && title != null)
-+                    builder = builder + " - ";
-+                if (title != null)
-+                    builder = builder + title.toString();
+@@ -4672,6 +4674,11 @@ public void run() {
+         // Use AbsListView#fling(int) instead
+         @UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.P)
+         void start(int initialVelocity) {
++            if (Math.abs(initialVelocity) > mDecacheThreshold) {
++                // For long flings, scrolling cache causes stutter, so don't use it
++                clearScrollingCache();
++            }
 +
-+                n.getNotification().tickerText = builder;
-             } else if (notificationText != null) {
-                 if (mShowingNotificationText != null && notificationText.equals(mShowingNotificationText)) {
-                     // Already shown
+             int initialY = initialVelocity < 0 ? Integer.MAX_VALUE : 0;
+             mLastFlingY = initialY;
+             mScroller.setInterpolator(null);
+@@ -4751,6 +4758,10 @@ void startScroll(int distance, int duration, boolean linear,
+         // To interrupt a fling early you should use smoothScrollBy(0,0) instead
+         @UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.P)
+         void endFling() {
++            endFling(true);
++        }
++
++        void endFling(boolean clearCache) {
+             mTouchMode = TOUCH_MODE_REST;
+ 
+             removeCallbacks(this);
+@@ -4759,7 +4770,8 @@ void endFling() {
+             if (!mSuppressIdleStateChangeCall) {
+                 reportScrollStateChange(OnScrollListener.SCROLL_STATE_IDLE);
+             }
+-            clearScrollingCache();
++            if (clearCache)
++                clearScrollingCache();
+             mScroller.abortAnimation();
+ 
+             if (mFlingStrictSpan != null) {
 
