@@ -411,7 +411,10 @@ public class BatteryMeterView extends LinearLayout implements
 		    AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(this.getContext(), R.anim.alpha);
 		    mBatteryPercentView.startAnimation(alphaAnimation);
 		}
-		else {mBatteryPercentView.clearAnimation();}
+		else { mBatteryPercentView.setText(
+		    NumberFormat.getIntegerInstance().format(mLevel / 1f));
+		    mBatteryPercentView.clearAnimation();
+		}
 	}
 	else { mBatteryPercentView.setText(
 		NumberFormat.getIntegerInstance().format(mLevel / 1f));
