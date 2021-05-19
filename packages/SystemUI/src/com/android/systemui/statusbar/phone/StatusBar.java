@@ -2907,7 +2907,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         public View mTickerView;
 
         MyLyricTicker(Context context, View sb) {
-            super(context, sb, mTickerAnimationMode);
+            super(context, sb, mLyricTickerAnimationMode);
             if (!mLyricEnabled) {
                 Log.w(TAG, "MyLyricTicker instantiated with mLyricEnabled=false", new Throwable());
             }
