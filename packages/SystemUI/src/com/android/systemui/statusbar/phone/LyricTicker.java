@@ -68,21 +68,35 @@ public abstract class LyricTicker implements DarkReceiver {
     private Animation mAnimationIn;
     private Animation mAnimationOut;
 
-    public LyricTicker(Context context, View tickerLayout) {
+    public LyricTicker(Context context, View tickerLayout, int lyricanimationMode) {
         mContext = context;
 
-        updateAnimation();
+        updateAnimation(lyricanimationMode);
 
         mNotificationColorUtil = ContrastColorUtil.getInstance(mContext);
 
         Dependency.get(DarkIconDispatcher.class).addDarkReceiver(this);
     }
 
-    public void updateAnimation() {
-        mAnimationIn = AnimationUtils.loadAnimation(mContext,
-                com.android.internal.R.anim.push_up_in);
-        mAnimationOut = AnimationUtils.loadAnimation(mContext,
-                com.android.internal.R.anim.push_up_out);
+    public void updateAnimation(int lyricanimationMode) {
+        if (lyricanimationMode == 1) {
+            mAnimationIn = AnimationUtils.loadAnimation(mContext,
+                    com.android.internal.R.anim.push_up_in);
+            mAnimationOut = AnimationUtils.loadAnimation(mContext,
+                    com.android.internal.R.anim.push_up_out);
+        } else {
+            mAnimationIn = new AlphaAnimation(0.0f, 1.0f);
+            Interpolator interpolatorIn = AnimationUtils.loadInterpolator(mContext,
+                    android.R.interpolator.decelerate_quad);
+            mAnimationIn.setInterpolator(interpolatorIn);
+            mAnimationIn.setDuration(300);
+
+            mAnimationOut = new AlphaAnimation(1.0f, 0.0f);
+            Interpolator interpolatorOut = AnimationUtils.loadInterpolator(mContext,
+                    android.R.interpolator.accelerate_quad);
+            mAnimationOut.setInterpolator(interpolatorOut);
+            mAnimationOut.setDuration(300);
+        }
         
         if (mTextSwitcher != null && mIconSwitcher != null) {
             setViewAnimations();

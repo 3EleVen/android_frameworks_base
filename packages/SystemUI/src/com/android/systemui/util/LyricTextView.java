@@ -33,7 +33,7 @@ public class LyricTextView extends TextView {
     private float x = 0f;
     private String text;
 
-    public static final int startScrollDelay = 500;
+    public static final int startScrollDelay = 0;
     public static final int invalidateDelay = 10;
 
     private Paint mPaint;

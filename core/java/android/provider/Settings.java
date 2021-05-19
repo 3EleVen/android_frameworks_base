@@ -4872,6 +4872,15 @@ public final class Settings {
                 "status_bar_ticker_animation_mode";
 
         /**
+         * LyricTicker animation
+         * 0: Fade animation
+         * 1: Scrolling ticker
+         * @hide
+         */
+        public static final String STATUS_BAR_LYRICTICKER_ANIMATION_MODE =
+                "status_bar_lyricticker_animation_mode";
+
+        /**
          * Status bar ticker duration in milliseconds.
          * @hide
          */
@@ -4953,6 +4962,7 @@ public final class Settings {
 	    PUBLIC_SETTINGS.add(LOCKSCREEN_BATTERY_INFO);
 	    PUBLIC_SETTINGS.add(STATUS_BAR_SHOW_TICKER);
 	    PUBLIC_SETTINGS.add(STATUS_BAR_TICKER_ANIMATION_MODE);
+	    PUBLIC_SETTINGS.add(STATUS_BAR_LYRICTICKER_ANIMATION_MODE);
 	    PUBLIC_SETTINGS.add(STATUS_BAR_TICKER_TICK_DURATION);
 	    PUBLIC_SETTINGS.add(STATUS_BAR_SHOW_LYRIC);
         }

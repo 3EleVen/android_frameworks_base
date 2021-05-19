@@ -299,6 +299,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             "system:" + Settings.System.STATUS_BAR_SHOW_TICKER;
     private static final String STATUS_BAR_TICKER_ANIMATION_MODE =
             "system:" + Settings.System.STATUS_BAR_TICKER_ANIMATION_MODE;
+    private static final String STATUS_BAR_LYRICTICKER_ANIMATION_MODE =
+            "system:" + Settings.System.STATUS_BAR_LYRICTICKER_ANIMATION_MODE;
     private static final String STATUS_BAR_TICKER_TICK_DURATION =
             "system:" + Settings.System.STATUS_BAR_TICKER_TICK_DURATION;
 
@@ -505,6 +507,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     public LyricTicker mLyricTicker;
     private boolean mLyricTicking;
     public boolean mLyricEnabled;
+    private int mLyricTickerAnimationMode;
 
     // for disabling the status bar
     private int mDisabled1 = 0;
@@ -980,6 +983,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         mTunerService.addTunable(this, STATUS_BAR_BRIGHTNESS_CONTROL);
         mTunerService.addTunable(this, STATUS_BAR_SHOW_TICKER);
         mTunerService.addTunable(this, STATUS_BAR_TICKER_ANIMATION_MODE);
+        mTunerService.addTunable(this, STATUS_BAR_LYRICTICKER_ANIMATION_MODE);
         mTunerService.addTunable(this, STATUS_BAR_TICKER_TICK_DURATION);
 
         mDisplayManager = mContext.getSystemService(DisplayManager.class);
@@ -2903,7 +2907,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         public View mTickerView;
 
         MyLyricTicker(Context context, View sb) {
-            super(context, sb);
+            super(context, sb, mTickerAnimationMode);
             if (!mLyricEnabled) {
                 Log.w(TAG, "MyLyricTicker instantiated with mLyricEnabled=false", new Throwable());
             }
@@ -2918,8 +2922,13 @@ public class StatusBar extends SystemUI implements DemoMode,
             if (mLyricTicker == null || !mLyricEnabled) return;
             mLyricTicking = true;
             Animation outAnim, inAnim;
-            outAnim = loadAnim(com.android.internal.R.anim.push_up_out, null);
-            inAnim = loadAnim(com.android.internal.R.anim.push_up_in, null);
+            if (mLyricTickerAnimationMode == 1) {
+                outAnim = loadAnim(com.android.internal.R.anim.push_up_out, null);
+                inAnim = loadAnim(com.android.internal.R.anim.push_up_in, null);
+            } else {
+                outAnim = loadAnim(true, null);
+                inAnim = loadAnim(false, null);
+            }
             mStatusBarLeftSide.setVisibility(View.GONE);
             mStatusBarLeftSide.startAnimation(outAnim);
             mCenteredIconArea.setVisibility(View.GONE);
@@ -2933,8 +2942,13 @@ public class StatusBar extends SystemUI implements DemoMode,
         @Override
         public void tickerDone() {
             Animation outAnim, inAnim;
-            outAnim = loadAnim(com.android.internal.R.anim.push_up_out, mTickingDoneListener);
-            inAnim = loadAnim(com.android.internal.R.anim.push_up_in, null);
+            if (mLyricTickerAnimationMode == 1) {
+                outAnim = loadAnim(com.android.internal.R.anim.push_up_out, mTickingDoneListener);
+                inAnim = loadAnim(com.android.internal.R.anim.push_up_in, null);
+            } else {
+                outAnim = loadAnim(true, mTickingDoneListener);
+                inAnim = loadAnim(false, null);
+            }
             mStatusBarLeftSide.setVisibility(View.VISIBLE);
             mStatusBarLeftSide.startAnimation(inAnim);
             mCenteredIconArea.setVisibility(View.VISIBLE);
@@ -5068,6 +5082,11 @@ public class StatusBar extends SystemUI implements DemoMode,
             mTickerAnimationMode = TunerService.parseInteger(newValue, 1);
                 if (mTicker != null) {
                     mTicker.updateAnimation(mTickerAnimationMode);
+                }
+        } else if (STATUS_BAR_LYRICTICKER_ANIMATION_MODE.equals(key)) {
+            mLyricTickerAnimationMode = TunerService.parseInteger(newValue, 1);
+                if (mLyricTicker != null) {
+                    mLyricTicker.updateAnimation(mLyricTickerAnimationMode);
                 }
         } else if (STATUS_BAR_TICKER_TICK_DURATION.equals(key)) {
             mTickerTickDuration = TunerService.parseInteger(newValue, 3000);
