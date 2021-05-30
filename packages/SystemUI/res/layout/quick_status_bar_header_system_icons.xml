@@ -52,6 +52,8 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical|end"
         android:layout_gravity="center_vertical|end"
+        android:paddingStart="@dimen/status_bar_horizontal_padding"
+        android:paddingEnd="@dimen/status_bar_horizontal_padding"
         android:visibility="gone" />
     </LinearLayout>
 
