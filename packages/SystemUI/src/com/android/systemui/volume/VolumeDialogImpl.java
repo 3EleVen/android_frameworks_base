@@ -434,12 +434,6 @@ public class VolumeDialogImpl implements VolumeDialog,
                     });
                 }
             }
-        }
-    };
-
-    private final TunerService.Tunable mTunable = new TunerService.Tunable() {
-        @Override
-        public void onTuningChanged(String key, String newValue) {
             if (key.equals(SHOW_APP_VOLUME)) {
                 final boolean showAppVolume = TunerService.parseIntegerSwitch(newValue, false);
                 if (mShowAppVolume != showAppVolume) {
