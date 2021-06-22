@@ -149,6 +149,7 @@ import com.android.internal.logging.UiEvent;
 import com.android.internal.logging.UiEventLogger;
 import com.android.internal.logging.UiEventLoggerImpl;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
+import com.android.internal.os.Zygote;
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.statusbar.RegisterStatusBarResult;
 import com.android.internal.view.AppearanceRegion;
@@ -297,6 +298,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             "mokeesystem:" + MoKeeSettings.System.STATUS_BAR_BRIGHTNESS_CONTROL;
     private static final String STATUS_BAR_SHOW_TICKER =
             "system:" + Settings.System.STATUS_BAR_SHOW_TICKER;
+    private static final String STATUS_BAR_SHOW_LYRIC =
+            "system:" + Settings.System.STATUS_BAR_SHOW_LYRIC;
     private static final String STATUS_BAR_TICKER_ANIMATION_MODE =
             "system:" + Settings.System.STATUS_BAR_TICKER_ANIMATION_MODE;
     private static final String STATUS_BAR_LYRICTICKER_ANIMATION_MODE =
@@ -5078,6 +5081,10 @@ public class StatusBar extends SystemUI implements DemoMode,
             mBrightnessControl = TunerService.parseIntegerSwitch(newValue, false);
         } else if (STATUS_BAR_SHOW_TICKER.equals(key)) {
             mTickerEnabled = TunerService.parseInteger(newValue, 0);
+        } else if (STATUS_BAR_SHOW_LYRIC.equals(key)) {
+            mLyricEnabled =
+                    TunerService.parseIntegerSwitch(newValue, false);
+	    SystemProperties.set(Zygote.EXTHM_STATUS_BAR_LYRIC_PROP, mLyricEnabled ? "true" : "false");
         } else if (STATUS_BAR_TICKER_ANIMATION_MODE.equals(key)) {
             mTickerAnimationMode = TunerService.parseInteger(newValue, 1);
                 if (mTicker != null) {
