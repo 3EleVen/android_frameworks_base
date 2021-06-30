@@ -482,17 +482,23 @@ public class KeyguardIndicationController implements StateListener,
         }
     }
 
+    int BL = Integer.parseInt(NumberFormat.getIntegerInstance().format(mBatteryLevel / 1f));
+
     private void updateChargingIndication() {
-        if (!mDozing && mPowerPluggedIn) {
-	    if (mPowerCharged ) {
+        if (BL <= 99) {
+	    if (!mDozing && mPowerPluggedIn) {
+		mChargingIndicationView.setVisibility(View.VISIBLE);
+		mChargingIndicationView.playAnimation();
+	    } else {
+		mChargingIndicationView.setVisibility(View.GONE);
+	    }
+        } else {
+	    if (!mDozing && mPowerPluggedIn) {
 		mChargingIndicationView.setVisibility(View.VISIBLE);
 		mChargingIndicationView.clearAnimation();
 	    } else {
-		mChargingIndicationView.setVisibility(View.VISIBLE);
-		mChargingIndicationView.playAnimation();
+		mChargingIndicationView.setVisibility(View.GONE);
 	    }
-        } else {
-            mChargingIndicationView.setVisibility(View.GONE);
         }
     }
 
