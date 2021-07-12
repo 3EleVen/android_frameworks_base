@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2016 The CyanogenMod Project
-     Copyright (C) 2018-2019 The LineageOS Project
+     Copyright (C) 2018-2021 The LineageOS Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -27,4 +27,6 @@
     <dimen name="ticker_top_padding">2dp</dimen>
     <dimen name="ticker_icon_end_margin">2dp</dimen>
     <dimen name="ticker_text_end_padding">2dp</dimen>
+    <!-- Largest size an avatar might need to be drawn in the power menu user picker -->
+    <dimen name="global_actions_avatar_size">24dp</dimen>
 </resources>
