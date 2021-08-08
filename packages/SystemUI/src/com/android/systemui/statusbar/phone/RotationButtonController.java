@@ -185,6 +185,12 @@ public class RotationButtonController {
     }
 
     void setRotateSuggestionButtonState(final boolean visible, final boolean force) {
+	// add start
+        android.util.Log.d("RotationButtonController", " setRotateSuggestionButtonState return");
+        if (true) {
+            return;
+        }
+	//add end
         // At any point the the button can become invisible because an a11y service became active.
         // Similarly, a call to make the button visible may be rejected because an a11y service is
         // active. Must account for this.
