@@ -49,11 +49,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.systemui.statusbar.phone.StatusBar;
-import com.android.systemui.Dependency;
 import com.android.systemui.R;
-
-import mokee.app.MoKeeContextConstants;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -97,7 +93,7 @@ public abstract class AuthBiometricView extends LinearLayout {
      * Authenticated, dialog animating away soon.
      */
     protected static final int STATE_AUTHENTICATED = 6;
-
+    
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({STATE_IDLE, STATE_AUTHENTICATING_ANIMATING_IN, STATE_AUTHENTICATING, STATE_HELP,
             STATE_ERROR, STATE_PENDING_CONFIRMATION, STATE_AUTHENTICATED})
@@ -175,8 +171,8 @@ public abstract class AuthBiometricView extends LinearLayout {
     private final Injector mInjector;
     private final Handler mHandler;
     private final AccessibilityManager mAccessibilityManager;
-    protected final int mTextColorError;
-    protected final int mTextColorHint;
+    private final int mTextColorError;
+    private final int mTextColorHint;
 
     private AuthPanelController mPanelController;
     private Bundle mBiometricPromptBundle;
@@ -190,7 +186,7 @@ public abstract class AuthBiometricView extends LinearLayout {
     private TextView mDescriptionView;
     protected ImageView mIconView;
     protected ImageView mAppIcon;
-    protected TextView mIndicatorView;
+    @VisibleForTesting protected TextView mIndicatorView;
     @VisibleForTesting Button mNegativeButton;
     @VisibleForTesting Button mPositiveButton;
     @VisibleForTesting Button mTryAgainButton;
@@ -232,6 +228,12 @@ public abstract class AuthBiometricView extends LinearLayout {
      * @return true if the dialog supports {@link AuthDialog.DialogSize#SIZE_SMALL}
      */
     protected abstract boolean supportsSmallDialog();
+
+    /**
+     * @return string resource which is appended to the negative text
+     */
+    @StringRes
+    protected abstract int getDescriptionTextId();
 
     private final Runnable mResetErrorRunnable;
 
@@ -276,10 +278,6 @@ public abstract class AuthBiometricView extends LinearLayout {
         mHasFod = FodUtils.hasFodSupport(context);
 
         mAccessibilityManager = context.getSystemService(AccessibilityManager.class);
-
-        PackageManager packageManager = context.getPackageManager();
-        mHasFod = packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT) &&
-                packageManager.hasSystemFeature(MoKeeContextConstants.Features.FOD);
 
         mResetErrorRunnable = () -> {
             updateState(getStateForAfterError());
@@ -754,26 +752,25 @@ public abstract class AuthBiometricView extends LinearLayout {
             setTextOrHide(mDescriptionView,
                     mBiometricPromptBundle.getString(BiometricPrompt.KEY_DESCRIPTION));
         } else {
-            Drawable icon = null;
+            ApplicationInfo aInfo = null;
             try {
-                icon = mPackageManager.getApplicationIcon(
-                    mPackageManager.getApplicationInfoAsUser(applockPackage.toString(), 0, mUserId));
+                aInfo = mPackageManager.getApplicationInfoAsUser(applockPackage.toString(), 0, mUserId);
             } catch(PackageManager.NameNotFoundException e) {
                 // ignored
             }
-            if (icon == null){
-                try {
-                    icon = mPackageManager.getApplicationIcon(
-                        mPackageManager.getApplicationInfoAsUser("android", 0, mUserId));
-                } catch(PackageManager.NameNotFoundException e) {
-                    // ignored
-                }
+            Drawable icon = (aInfo == null) ? null : mPackageManager.getApplicationIcon(aInfo);
+            if (icon == null) {
+                mTitleView.setVisibility(View.VISIBLE);
+                setText(mTitleView, getResources().getString(R.string.applock_unlock) + " "
+                        + mBiometricPromptBundle.getString(BiometricPrompt.KEY_TITLE));
+            } else {
+                mTitleView.setVisibility(View.GONE);
+                mAppIcon.setVisibility(View.VISIBLE);
+                mAppIcon.setImageDrawable(icon);
             }
-            mTitleView.setVisibility(View.GONE);
-            mAppIcon.setVisibility(View.VISIBLE);
-            mAppIcon.setImageDrawable(icon);
             setTextOrHide(mDescriptionView, mBiometricPromptBundle.getString(BiometricPrompt.KEY_DESCRIPTION)
-                    + "\n" + getResources().getString(R.string.applock_unlock));
+                    + getResources().getString(R.string.applock_locked) + "\n"
+                    + negativeText + getResources().getString(getDescriptionTextId()));
             mDescriptionView.setGravity(CENTER);
         }
 
@@ -810,22 +807,9 @@ public abstract class AuthBiometricView extends LinearLayout {
             final View child = getChildAt(i);
 
             if (child.getId() == R.id.biometric_icon) {
-                if (this instanceof AuthBiometricFingerprintView && mHasFod) {
-                    final int buttonBarHeight =
-                            findViewById(R.id.button_bar).getLayoutParams().height;
-                    // The view is invisible, so it still takes space and
-                    // we use that to adjust for the FOD icon
-                    final int fodHeight = Dependency.get(StatusBar.class).getFodHeight(true) -
-                            buttonBarHeight - findViewById(R.id.button_bar).getPaddingTop();
-
-                    child.measure(
-                            MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.AT_MOST),
-                            MeasureSpec.makeMeasureSpec(fodHeight, MeasureSpec.EXACTLY));
-                } else {
-                    child.measure(
-                            MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.AT_MOST),
-                            MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST));
-                }
+                child.measure(
+                        MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.AT_MOST),
+                        MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST));
             } else if (child.getId() == R.id.button_bar) {
                 child.measure(
                         MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY),
@@ -895,3 +879,4 @@ public abstract class AuthBiometricView extends LinearLayout {
         return Utils.isDeviceCredentialAllowed(mBiometricPromptBundle);
     }
 }
+
